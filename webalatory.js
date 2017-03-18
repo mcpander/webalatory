@@ -9,6 +9,6 @@ app.get('/', function (req, res) {
     res.send('Hello Webalatory!');
 });
 
-app.listen(80, function () {
-    console.log('Webalatory on port 80!');
+app.listen(process.env.PORT || 80, function () {
+    console.log('Webalatory on port '+(process.env.PORT || 80));
 });
