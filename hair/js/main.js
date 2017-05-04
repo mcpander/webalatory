@@ -2,7 +2,12 @@
  * Created by McPander on 01.05.2017.
  */
 'use strict'
-var events = JSON.parse(localStorage['events'] || {});
+var events = {};
+try{
+    events = JSON.parse(localStorage['events'])
+}catch(e){
+    console.log(e)
+}
 window.addEventListener('load',function(){
     var userPic = document.querySelector('.user-pic img');
     var userPicContainer = document.querySelector('.user-pic');
@@ -25,7 +30,7 @@ window.addEventListener('load',function(){
                     str += '<option value="'+i+'">'+(9+i)+':00</option>';
                 }
             }
-            alert('Вы записанны на стрижку на '+new Date(date.value).toLocaleDateString()+' на'+(time.value+9)+':00!')
+            alert('Вы записанны на стрижку на '+new Date(date.value).toLocaleDateString()+' на '+(+time.value+9)+':00!')
             time.innerHTML = str;
         }else{
             alert('Выберите дату и время!')
@@ -43,8 +48,9 @@ window.addEventListener('load',function(){
         var str = '';
         if(event.target.value != ''){
             for(var i = 1;i<=10;i++){
+                console.log(i,str,events)
                 if(!events[+new Date(event.target.value)] || !events[+new Date(event.target.value)][i]){
-                    str += '<option value="'+i+'">'+(9+i)+':00</option>';
+                    str += '<option value="'+i+'">'+(i+9)+':00</option>';
                 }
             }
         }
