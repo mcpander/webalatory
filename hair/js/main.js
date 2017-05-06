@@ -2,6 +2,12 @@
  * Created by McPander on 01.05.2017.
  */
 'use strict'
+var specialists = {
+    1:'Иванова',
+    2:'Петрова',
+    3:'Сидорова',
+    4:'Гомодрилов'
+};
 var events = {};
 try{
     events = JSON.parse(localStorage['events'])
@@ -16,21 +22,25 @@ window.addEventListener('load',function(){
     var size = document.getElementById('size');
     var date = document.getElementById('date');
     var time = document.getElementById('time');
+    var specialist = document.getElementById('specialist');
     var btn = document.getElementById('addToList');
     btn.onclick = function(){
         if(date.value != '' && time.value != ''){
             if(!events[+new Date(date.value)]){
                 events[+new Date(date.value)] = {};
             }
-            events[+new Date(date.value)][time.value] = true;
+            if(!events[+new Date(date.value)][specialist.value]){
+                events[+new Date(date.value)][specialist.value] = {};
+            }
+            events[+new Date(date.value)][specialist.value][time.value] = true;
             localStorage['events'] = JSON.stringify(events);
             var str = '';
             for(var i = 1;i<=10;i++){
-                if(!events[+new Date(date.value)] || !events[+new Date(date.value)][i]){
+                if(!events[+new Date(date.value)] || !events[+new Date(date.value)][specialist.value] || !events[+new Date(date.value)][specialist.value][i]){
                     str += '<option value="'+i+'">'+(9+i)+':00</option>';
                 }
             }
-            alert('Вы записанны на стрижку на '+new Date(date.value).toLocaleDateString()+' на '+(+time.value+9)+':00!')
+            alert('Вы записанны на стрижку к мастеру '+specialists[specialist.value]+' на '+new Date(date.value).toLocaleDateString()+' на '+(+time.value+9)+':00!')
             time.innerHTML = str;
         }else{
             alert('Выберите дату и время!')
@@ -49,7 +59,19 @@ window.addEventListener('load',function(){
         if(event.target.value != ''){
             for(var i = 1;i<=10;i++){
                 console.log(i,str,events)
-                if(!events[+new Date(event.target.value)] || !events[+new Date(event.target.value)][i]){
+                if(!events[+new Date(event.target.value)] || !events[+new Date(event.target.value)][specialist.value] || !events[+new Date(event.target.value)][specialist.value][i]){
+                    str += '<option value="'+i+'">'+(i+9)+':00</option>';
+                }
+            }
+        }
+        time.innerHTML = str;
+    });
+    specialist.addEventListener('change',function(event){
+        var str = '';
+        if(event.target.value != ''){
+            for(var i = 1;i<=10;i++){
+                console.log(i,str,events)
+                if(!events[+new Date(date.value)] || !events[+new Date(date.value)][event.target.value] || !events[+new Date(date.value)][event.target.value][i]){
                     str += '<option value="'+i+'">'+(i+9)+':00</option>';
                 }
             }
